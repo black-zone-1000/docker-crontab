@@ -4,6 +4,7 @@ FROM ubuntu:latest
 RUN apt-get update
 RUN apt-get install -y cron
 RUN apt-get install -y curl
+RUN apt-get install -y busybox-syslogd
 
 # Add crontab file in the cron directory
 ADD simple-crontab /etc/cron.d/simple-crontab
@@ -20,6 +21,7 @@ RUN touch /var/log/cron.log
 
 # Run the command on container startup
 CMD echo Start... >> /var/log/cron.log &&  \
+    syslogd && \
     cron && \
     tail -f /var/log/cron.log
 
